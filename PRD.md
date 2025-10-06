@@ -9,11 +9,13 @@
 - Harmonogram: Październik 2025 (start) → Grudzień 2025 (MVP) → Styczeń 2026 (launch)
 
 ### 1.2 Stack Technologiczny
-- Frontend/Backend: Astro
-- Baza danych + Auth: Supabase
-- Scraping: C#
-- AI: Claude API
-- Deployment: Vercel/Netlify
+- Frontend: Astro 5 z React 19 dla komponentów interaktywnych
+- Styling: Tailwind 4 + Shadcn/ui
+- Backend: Supabase (PostgreSQL + Auth + Real-time)
+- Scraping: Node.js/Python (zamiast C# dla lepszej integracji)
+- AI: Openrouter.ai (dostęp do wielu modeli: Claude, GPT, Gemini)
+- Deployment: DigitalOcean (Docker) + GitHub Actions CI/CD
+- Monitoring: Sentry (błędy) + Vercel Analytics
 
 ### 1.3 Cele Produktu
 - Skrócenie czasu analizy statystyk
@@ -137,7 +139,7 @@ Funkcje:
 
 ### W Zakresie MVP:
 ✅ Import manualny i automatyczny
-✅ AI generowanie (Claude API)
+✅ AI generowanie (Openrouter.ai - Claude 3.5 Sonnet)
 ✅ Przeglądanie i porównywanie statystyk
 ✅ System bonusów
 ✅ Transfer tips
@@ -580,9 +582,10 @@ Kryteria Akceptacji:
     - "Analizuję statystyki..." (30-70%)
     - "Optymalizuję budżet..." (70-100%)
   * Spinner lub progress bar
-- Backend → Claude API call z:
+- Backend → Openrouter.ai API call z:
   * Wszystkie statystyki (JSON)
   * Formacja, zablokowani, system wagowy, ograniczenia
+  * Wybór modelu AI (Claude 3.5 Sonnet domyślnie, fallback na GPT-4)
 - Timeout 30s (potem error message)
 - Generowanie: typowo 10-30s
 - Po sukcesie, wyświetlenie składu:
@@ -1061,11 +1064,11 @@ Kryteria Akceptacji:
 ## 7. Harmonogram MVP
 
 ### Październik (M1): Foundation
-- W1-2: Astro + Supabase setup, Auth, Database schema, Scraping prototype
+- W1-2: Astro + Supabase setup, Auth, Database schema, Scraping prototype (Node.js/Python)
 - W3-4: Scraping implementation, Import do DB, UI tabel statystyk
 
 ### Listopad (M2): Core Features
-- W1-2: Claude API integration, Prompt engineering, UI generowania, System bonusów
+- W1-2: Openrouter.ai integration, Prompt engineering, UI generowania, System bonusów
 - W3-4: User management, Zapisywanie składów, Tutorial, Transfer tips
 
 ### Grudzień (M3): Polish & Launch
@@ -1080,8 +1083,8 @@ Runda wiosenna - pierwsi użytkownicy
 ## 8. Ryzyka i Mitygacje
 
 ### Wysokie
-1. **Scraping** - Mitygacja: Manual import backup, kontakt z Ekstraklasą
-2. **Claude API koszty/jakość** - Mitygacja: Prosty algorytm fallback, optymalizacja promptu
+1. **Scraping** - Mitygacja: Manual import backup, kontakt z Ekstraklasą, Node.js/Python dla lepszej integracji
+2. **Openrouter.ai koszty/jakość** - Mitygacja: Prosty algorytm fallback, optymalizacja promptu, fallback na GPT-4
 3. **Brak użytkowników** - Mitygacja: Marketing w społecznościach Fantasy, influencerzy
 
 ### Średnie
@@ -1089,12 +1092,52 @@ Runda wiosenna - pierwsi użytkownicy
 2. **Performance** - Mitygacja: Caching, optymalizacja post-MVP
 3. **Konkurencja** - Mitygacja: AI differentiator, szybki time-to-market
 
-## 9. Otwarte Pytania
+## 9. Rekomendacje Technologii z Ekosystemu
+
+### 9.1 Alternatywy do Rozważenia
+
+**Frontend Framework:**
+- **Next.js 14** - Jeśli zespół bardziej zna React ecosystem
+- **SvelteKit** - Lżejsze rozwiązanie, szybsze ładowanie
+- **Remix** - Lepsze dla aplikacji z dużą ilością formularzy
+
+**Styling:**
+- **CSS Modules** - Prostsze niż Tailwind dla MVP
+- **Styled Components** - Jeśli preferujesz CSS-in-JS
+- **UnoCSS** - Szybsza alternatywa dla Tailwind
+
+**Backend/Database:**
+- **PlanetScale** - MySQL z branching, lepsze dla większych aplikacji
+- **Vercel Postgres** - Jeśli już używasz Vercel
+- **Railway** - Prostsze deployment niż DigitalOcean
+
+**AI/ML:**
+- **Anthropic Claude API** - Bezpośrednio, bez Openrouter
+- **OpenAI API** - Bezpośrednio, sprawdzone rozwiązanie
+- **Groq** - Bardzo szybkie inference, dobre dla real-time
+
+**Monitoring/Analytics:**
+- **PostHog** - Kompletne product analytics
+- **Mixpanel** - Event tracking
+- **LogRocket** - Session replay + error tracking
+
+### 9.2 Rekomendowane Kombinacje
+
+**Opcja A - Minimalna (MVP):**
+- Next.js + CSS Modules + Supabase + OpenAI API + Vercel
+
+**Opcja B - Zbalansowana (obecna):**
+- Astro + Tailwind + Supabase + Openrouter.ai + DigitalOcean
+
+**Opcja C - Enterprise:**
+- Next.js + Styled Components + PlanetScale + Anthropic + AWS
+
+## 10. Otwarte Pytania
 
 ### Priorytet 1 (Krytyczne - przed startem)
-- Zbadać scraping fantasy.ekstraklasa.org (prototyp działa?)
+- Zbadać scraping fantasy.ekstraklasa.org (prototyp w Node.js/Python działa?)
 - Przeczytać regulamin (scraping dozwolony?)
-- Przetestować Claude API z prawdziwymi danymi (koszt? jakość?)
+- Przetestować Openrouter.ai z prawdziwymi danymi (koszt? jakość? Claude vs GPT?)
 - Database schema (zaprojektować w Supabase)
 
 ### Priorytet 2 (Ważne - przed implementacją)
@@ -1108,11 +1151,12 @@ Runda wiosenna - pierwsi użytkownicy
 - Landing page content
 - Beta tester list (5-10 osób)
 
-## 10. Kontrola Dokumentu
+## 11. Kontrola Dokumentu
 
-- **Wersja**: 1.0 (Final)
+- **Wersja**: 1.1 (Zaktualizowana)
 - **Data**: Październik 2025
 - **Status**: Zatwierdzony do Developmentu
+- **Zmiany**: Openrouter.ai, Node.js/Python scraping, rekomendacje technologii
 - **Następny przegląd**: Miesięcznie podczas developmentu
 
 Dokument aktualizowany gdy:
