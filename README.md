@@ -6,16 +6,6 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.1.13-cyan.svg)](https://tailwindcss.com/)
 
-## 📋 Table of Contents
-
-- [Project Description](#project-description)
-- [Tech Stack](#tech-stack)
-- [Getting Started Locally](#getting-started-locally)
-- [Available Scripts](#available-scripts)
-- [Project Scope](#project-scope)
-- [Project Status](#project-status)
-- [License](#license)
-
 ## 🎯 Project Description
 
 **Fantasy Ekstraklasa Optimizer** is an AI-powered web application designed to save time and improve decision-making for Fantasy Ekstraklasa players. The platform combines automated data collection, AI-driven lineup generation, and intuitive statistics visualization to help users create optimal fantasy football lineups.
