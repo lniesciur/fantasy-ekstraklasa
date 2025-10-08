@@ -32,6 +32,8 @@
 - **match_date**     TIMESTAMP WITH TIME ZONE NOT NULL  
 - **home_score**     SMALLINT  
 - **away_score**     SMALLINT  
+- **status**           VARCHAR(12) NOT NULL DEFAULT 'scheduled' CHECK (status IN ('scheduled','postponed','cancelled','played'))
+- **reschedule_reason** TEXT
 
 ### 1.5 player_stats
 - **id**             SERIAL PRIMARY KEY  
@@ -46,6 +48,12 @@
 - **red_cards**      SMALLINT NOT NULL  
 - **price**          NUMERIC(6,2) NOT NULL  
 - **predicted_start** BOOLEAN DEFAULT FALSE  
+- **lotto_assists**    SMALLINT NOT NULL DEFAULT 0
+- **own_goals**        SMALLINT NOT NULL DEFAULT 0
+- **penalties_saved**  SMALLINT NOT NULL DEFAULT 0
+- **penalties_won**    SMALLINT NOT NULL DEFAULT 0
+- **in_team_of_week**  BOOLEAN   NOT NULL DEFAULT FALSE
+- **saves**            SMALLINT   NOT NULL DEFAULT 0
 - **created_at**     TIMESTAMP WITH TIME ZONE DEFAULT now()  
 - **updated_at**     TIMESTAMP WITH TIME ZONE DEFAULT now()  
 - **UNIQUE** (player_id, gameweek_id)
