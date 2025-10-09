@@ -133,6 +133,28 @@
 - **success**        BOOLEAN NOT NULL  
 - **error_message**  TEXT  
 
+### 1.15 import_logs
+- **id**             UUID PRIMARY KEY DEFAULT gen_random_uuid()  
+- **user_id**        UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE  
+- **validation_id**  UUID  
+- **filename**       VARCHAR(255) NOT NULL  
+- **file_size**      INTEGER NOT NULL  -- bytes  
+- **import_type**    VARCHAR(20) NOT NULL DEFAULT 'excel' CHECK (import_type IN ('excel','csv','json'))  
+- **status**         VARCHAR(20) NOT NULL CHECK (status IN ('validating','validation_failed','validated','importing','completed','failed'))  
+- **overwrite_mode** VARCHAR(20) NOT NULL CHECK (overwrite_mode IN ('replace_existing','update_only','create_only'))  
+- **gameweek_id**    INTEGER REFERENCES gameweeks(id) ON DELETE SET NULL  
+- **started_at**     TIMESTAMP WITH TIME ZONE DEFAULT now()  
+- **completed_at**   TIMESTAMP WITH TIME ZONE  
+- **validation_results** JSONB  -- stores validation errors/warnings  
+- **import_results** JSONB  -- stores import statistics  
+- **error_message**  TEXT  
+- **players_total**  INTEGER DEFAULT 0  
+- **players_imported** INTEGER DEFAULT 0  
+- **players_updated** INTEGER DEFAULT 0  
+- **players_created** INTEGER DEFAULT 0  
+- **warnings_count** INTEGER DEFAULT 0  
+- **errors_count**   INTEGER DEFAULT 0  
+
 ---
 
 ## 2. Relationships
@@ -143,9 +165,11 @@
 - **gameweeks** 1—* **player_stats**  
 - **gameweeks** 1—* **lineups**  
 - **gameweeks** 1—* **transfer_tips**  
+- **gameweeks** 1—* **import_logs**  
 - **players** 1—* **player_stats**  
 - **users** 1—* **lineups**  
 - **users** 1—* **transfer_tips**  
+- **users** 1—* **import_logs**  
 - **lineups** 1—* **lineup_players**  
 - **lineups** 1—* **lineup_bonuses**  
 - **users** 1—1 **tutorial_status**  
@@ -167,6 +191,8 @@ Many-to-many is resolved by **lineup_players** (lineups ↔ players).
   CREATE INDEX idx_players_name_trgm ON players USING GIN (name gin_trgm_ops);
   ```
 - Composite index on `transfer_tips(user_id, gameweek_id)`  
+- Composite index on `import_logs(user_id, status, started_at)`  
+- Index on `import_logs(validation_id)` for quick validation lookup  
 - Materialized views (refreshed on schedule) for dashboards, e.g. `mv_player_leaderboard`, `mv_user_history`
 
 ---
@@ -182,6 +208,7 @@ ALTER TABLE lineup_bonuses  ENABLE ROW LEVEL SECURITY;
 ALTER TABLE transfer_tips   ENABLE ROW LEVEL SECURITY;
 ALTER TABLE tutorial_status ENABLE ROW LEVEL SECURITY;
 ALTER TABLE generation_logs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE import_logs     ENABLE ROW LEVEL SECURITY;
 ```
 
 Policy example (only owner can access):
