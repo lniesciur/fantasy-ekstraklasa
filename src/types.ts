@@ -31,15 +31,15 @@ export type FiltersApplied = Record<string, string[]>; // For player filters sum
 export interface RegisterCommand {
   email: string;
   password: string;
-  confirmPassword: string;
-  gdprConsent: boolean;
+  confirm_password: string;
+  gdpr_consent: boolean;
   // No direct DB tie; for Supabase auth.signUp
 }
 
 export interface LoginCommand {
   email: string;
   password: string;
-  rememberMe?: boolean;
+  remember_me?: boolean;
   // For Supabase auth.signInWithPassword
 }
 

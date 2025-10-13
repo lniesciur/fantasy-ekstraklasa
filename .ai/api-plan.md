@@ -34,8 +34,8 @@
 {
   "email": "user@example.com",
   "password": "password123",
-  "confirmPassword": "password123",
-  "gdprConsent": true
+  "confirm_password": "password123",
+  "gdpr_consent": true
 }
 ```
 - **Response (201)**:
@@ -59,7 +59,7 @@
 {
   "email": "user@example.com",
   "password": "password123",
-  "rememberMe": true
+  "remember_me": true
 }
 ```
 - **Response (200)**:
@@ -117,11 +117,11 @@
 - **Query Parameters**:
   - `position`: GK,DEF,MID,FWD (multi-select)
   - `team`: team_id (multi-select)
-  - `priceMin`: number (0-5000000)
-  - `priceMax`: number (0-5000000)
+  - `price_min`: number (0-5000000)
+  - `price_max`: number (0-5000000)
   - `health`: Pewny,Wątpliwy,Nie zagra (multi-select)
-  - `formMin`: number (0-10)
-  - `formMax`: number (0-10)
+  - `form_min`: number (0-10)
+  - `form_max`: number (0-10)
   - `search`: string (player name)
   - `sort`: name,price,fantasy_points,form (default: name)
   - `order`: asc,desc (default: asc)
@@ -172,7 +172,7 @@
   },
   "filters_applied": {
     "position": ["FWD"],
-    "priceMax": 4000000
+    "price_max": 4000000
   }
 }
 ```
@@ -536,7 +536,7 @@
 - **Method**: GET
 - **Path**: `/api/lineups`
 - **Description**: Get all saved lineups for current user
-- **Query Parameters**:
+- **Query Parameters**:  
   - `gameweek_id`: number (filter by gameweek)
   - `active_only`: boolean (only active lineups)
 - **Headers**: Authorization: Bearer {token}
