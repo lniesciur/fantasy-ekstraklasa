@@ -117,6 +117,90 @@ export interface Database {
           },
         ];
       };
+      import_logs: {
+        Row: {
+          completed_at: string | null;
+          error_message: string | null;
+          errors_count: number | null;
+          file_size: number;
+          filename: string;
+          gameweek_id: number | null;
+          id: string;
+          import_results: Json | null;
+          import_type: string;
+          overwrite_mode: string;
+          players_created: number | null;
+          players_imported: number | null;
+          players_total: number | null;
+          players_updated: number | null;
+          started_at: string | null;
+          status: string;
+          user_id: string;
+          validation_id: string | null;
+          validation_results: Json | null;
+          warnings_count: number | null;
+        };
+        Insert: {
+          completed_at?: string | null;
+          error_message?: string | null;
+          errors_count?: number | null;
+          file_size: number;
+          filename: string;
+          gameweek_id?: number | null;
+          id?: string;
+          import_results?: Json | null;
+          import_type?: string;
+          overwrite_mode: string;
+          players_created?: number | null;
+          players_imported?: number | null;
+          players_total?: number | null;
+          players_updated?: number | null;
+          started_at?: string | null;
+          status: string;
+          user_id: string;
+          validation_id?: string | null;
+          validation_results?: Json | null;
+          warnings_count?: number | null;
+        };
+        Update: {
+          completed_at?: string | null;
+          error_message?: string | null;
+          errors_count?: number | null;
+          file_size?: number;
+          filename?: string;
+          gameweek_id?: number | null;
+          id?: string;
+          import_results?: Json | null;
+          import_type?: string;
+          overwrite_mode?: string;
+          players_created?: number | null;
+          players_imported?: number | null;
+          players_total?: number | null;
+          players_updated?: number | null;
+          started_at?: string | null;
+          status?: string;
+          user_id?: string;
+          validation_id?: string | null;
+          validation_results?: Json | null;
+          warnings_count?: number | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "import_logs_gameweek_id_fkey";
+            columns: ["gameweek_id"];
+            isOneToOne: false;
+            referencedRelation: "gameweeks";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "import_logs_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       lineup_bonuses: {
         Row: {
           applied_at: string | null;
@@ -308,13 +392,17 @@ export interface Database {
           fantasy_points: number;
           gameweek_id: number;
           goals: number;
+          health_status: string | null;
           id: number;
           in_team_of_week: boolean;
           lotto_assists: number;
           match_id: number | null;
           minutes_played: number;
           own_goals: number;
+          penalties_caused: number;
+          penalties_missed: number;
           penalties_saved: number;
+          penalties_scored: number;
           penalties_won: number;
           player_id: number;
           predicted_start: boolean | null;
@@ -330,13 +418,17 @@ export interface Database {
           fantasy_points: number;
           gameweek_id: number;
           goals: number;
+          health_status?: string | null;
           id?: number;
           in_team_of_week?: boolean;
           lotto_assists?: number;
           match_id?: number | null;
           minutes_played: number;
           own_goals?: number;
+          penalties_caused?: number;
+          penalties_missed?: number;
           penalties_saved?: number;
+          penalties_scored?: number;
           penalties_won?: number;
           player_id: number;
           predicted_start?: boolean | null;
@@ -352,13 +444,17 @@ export interface Database {
           fantasy_points?: number;
           gameweek_id?: number;
           goals?: number;
+          health_status?: string | null;
           id?: number;
           in_team_of_week?: boolean;
           lotto_assists?: number;
           match_id?: number | null;
           minutes_played?: number;
           own_goals?: number;
+          penalties_caused?: number;
+          penalties_missed?: number;
           penalties_saved?: number;
+          penalties_scored?: number;
           penalties_won?: number;
           player_id?: number;
           predicted_start?: boolean | null;
@@ -475,18 +571,21 @@ export interface Database {
         Row: {
           crest_url: string | null;
           id: number;
+          is_active: boolean;
           name: string;
           short_code: string;
         };
         Insert: {
           crest_url?: string | null;
           id?: number;
+          is_active?: boolean;
           name: string;
           short_code: string;
         };
         Update: {
           crest_url?: string | null;
           id?: number;
+          is_active?: boolean;
           name?: string;
           short_code?: string;
         };

@@ -109,6 +109,38 @@ export interface UpdateTutorialCommand {
   // For TablesUpdate<"tutorial_status">
 }
 
+export interface CreateTeamCommand {
+  name: string;
+  short_code: string;
+  crest_url?: string;
+  is_active?: boolean;
+  // For TablesInsert<"teams">; validates uniqueness on name/short_code
+}
+
+export interface CreatePlayerCommand {
+  name: string;
+  team_id: number;
+  position: Position;
+  price: number;
+  health_status: HealthStatus;
+  // For TablesInsert<"players">; validates team_id exists and name uniqueness within team
+}
+
+export interface CreateGameweekCommand {
+  number: number;
+  start_date: string;
+  end_date: string;
+  // For TablesInsert<"gameweeks">; validates number uniqueness and date logic
+}
+
+export interface CreateMatchCommand {
+  gameweek_id: number;
+  home_team_id: number;
+  away_team_id: number;
+  match_date: string; // ISO 8601 format
+  status: MatchStatus; // 'scheduled' | 'postponed' | 'cancelled' | 'played'
+}
+
 export interface ImportCommand {
   validation_id: string;
   overwrite_mode: OverwriteMode;
@@ -120,6 +152,13 @@ export interface ForceScrapeCommand {
   type: ScrapeType;
   gameweek_id?: number; // Optional for targeted scrape
   // Inserts into scrape_runs
+}
+
+export interface ImportValidationCommand {
+  file: Buffer;
+  filename: string;
+  contentType: string;
+  // Internal type for service input (derived from request)
 }
 
 // === DTOs (API Response Bodies) ===
@@ -158,6 +197,64 @@ export interface LogoutResponse {
   message: string;
 }
 
+export interface CreateTeamResponse {
+  id: number;
+  name: string;
+  short_code: string;
+  crest_url: string | null;
+  is_active: boolean;
+  created_at: string;
+  message: string;
+  // Response from POST /api/teams with created team data
+}
+
+export interface CreatePlayerResponse {
+  id: number;
+  name: string;
+  team: {
+    id: number;
+    name: string;
+    short_code: string;
+    crest_url: string | null;
+  };
+  position: Position;
+  price: number;
+  health_status: HealthStatus;
+  created_at: string;
+  message: string;
+  // Response from POST /api/players with created player data
+}
+
+export interface CreateGameweekResponse {
+  id: number;
+  number: number;
+  start_date: string;
+  end_date: string;
+  status: "upcoming" | "active" | "completed";
+  created_at: string;
+  message: string;
+  // Response from POST /api/gameweeks with created gameweek data
+}
+
+export interface CreateMatchResponse {
+  id: number;
+  gameweek_id: number;
+  home_team: {
+    id: number;
+    name: string;
+    short_code: string;
+  };
+  away_team: {
+    id: number;
+    name: string;
+    short_code: string;
+  };
+  match_date: string;
+  status: MatchStatus;
+  created_at: string;
+  message: string;
+}
+
 // Player DTOs
 export interface PlayerCurrentStats {
   fantasy_points: number; // From player_stats.fantasy_points (latest)
@@ -186,6 +283,7 @@ export interface PlayerPerformance {
   fantasy_points: number; // player_stats.fantasy_points
   goals: number; // player_stats.goals
   assists: number; // player_stats.assists
+  health_status: HealthStatus; // player_stats.health_status
   // From player_stats join gameweeks, matches for historical (limit 5-10 recent)
 }
 
@@ -682,6 +780,68 @@ export interface ScrapeResponse {
   // After admin scrape insert
 }
 
+// === Validation Schemas ===
+
+import { z } from "zod";
+
+// Zod schema for CreateTeam request validation
+export const createTeamSchema = z.object({
+  name: z.string().trim().min(1, "Team name is required").max(255, "Team name too long"),
+  short_code: z
+    .string()
+    .trim()
+    .min(1, "Short code is required")
+    .max(10, "Short code must be 10 characters or less")
+    .transform((val) => val.toUpperCase()),
+  crest_url: z.string().url("Invalid URL format").optional(),
+  is_active: z.boolean().optional().default(true),
+});
+
+export type CreateTeamValidated = z.infer<typeof createTeamSchema>;
+
+// Zod schema for CreatePlayer request validation
+export const createPlayerSchema = z.object({
+  name: z.string().trim().min(1, "Player name is required").max(255, "Player name too long"),
+  team_id: z.number().int().positive("Team ID must be positive"),
+  position: z.enum(["GK", "DEF", "MID", "FWD"], {
+    errorMap: () => ({ message: "Position must be GK, DEF, MID, or FWD" })
+  }),
+  price: z.number().positive("Price must be positive").max(50000000, "Price too high"),
+  health_status: z.enum(["Pewny", "Wątpliwy", "Nie zagra"], {
+    errorMap: () => ({ message: "Health status must be Pewny, Wątpliwy, or Nie zagra" })
+  })
+});
+
+export type CreatePlayerValidated = z.infer<typeof createPlayerSchema>;
+
+// Zod schema for CreateGameweek request validation
+export const createGameweekSchema = z.object({
+  number: z.number().int().positive("Gameweek number must be positive"),
+  start_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format"),
+  end_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format")
+}).refine(data => new Date(data.start_date) < new Date(data.end_date), {
+  message: "Start date must be before end date",
+  path: ["start_date"]
+});
+
+export type CreateGameweekValidated = z.infer<typeof createGameweekSchema>;
+
+// Zod schema for CreateMatch request validation
+export const createMatchSchema = z.object({
+  gameweek_id: z.number().int().positive("Gameweek ID must be positive"),
+  home_team_id: z.number().int().positive("Home team ID must be positive"),
+  away_team_id: z.number().int().positive("Away team ID must be positive"),
+  match_date: z.string().regex(/^(\d{4}-\d{2}-\d{2}|\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z?)$/, "Invalid date format - must be YYYY-MM-DD or YYYY-MM-DDTHH:mm:ss or YYYY-MM-DDTHH:mm:ss.sssZ"),
+  status: z.enum(["scheduled", "postponed", "cancelled", "played"], {
+    errorMap: () => ({ message: "Status must be scheduled, postponed, cancelled, or played" })
+  })
+}).refine(data => data.home_team_id !== data.away_team_id, {
+  message: "Home team and away team must be different",
+  path: ["away_team_id"]
+});
+
+export type CreateMatchValidated = z.infer<typeof createMatchSchema>;
+
 // Re-exports for Entities (direct DB for internal use)
 export type { Tables, TablesInsert, TablesUpdate, Enums } from "./db/database.types";
 
@@ -695,4 +855,17 @@ export interface ImportPlayerRow {
   price: number;
   health_status: HealthStatus;
   fantasy_points: number; // From import sheet, for player_stats
+  goals: number; // Season total goals
+  assists: number; // Season total assists
+  lotto_assists: number; // Special assists for lotto bonus
+  penalties_scored: number; // Penalties scored
+  penalties_caused: number; // Penalties caused
+  penalties_missed: number; // Penalties missed
+  yellow_cards: number; // Yellow cards received
+  red_cards: number; // Red cards received
+  minutes_played: number; // Total minutes played this season
+  in_team_of_week: boolean; // Was in team of the week
+  predicted_start: boolean; // Predicted to start next match
+  // Note: health_status in ImportPlayerRow represents current health status
+  // and will be stored in both players.health_status and player_stats.health_status
 }

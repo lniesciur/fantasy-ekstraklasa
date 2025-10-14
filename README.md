@@ -23,6 +23,7 @@
 ### Target Audience
 
 Experienced Fantasy Ekstraklasa players who want to:
+
 - Reduce time spent on statistical analysis
 - Improve lineup optimization through AI assistance
 - Track performance and make data-driven decisions
@@ -30,6 +31,7 @@ Experienced Fantasy Ekstraklasa players who want to:
 ## 🛠 Tech Stack
 
 ### Frontend
+
 - **Astro 5** - Main framework for fast loading and minimal JavaScript
 - **React 19** - Interactive components (lineup generation, forms)
 - **TypeScript 5** - Static typing for better IDE support
@@ -37,6 +39,7 @@ Experienced Fantasy Ekstraklasa players who want to:
 - **Shadcn/ui** - React component library
 
 ### Backend & Database
+
 - **Supabase** - Backend-as-a-Service
   - PostgreSQL database
   - Supabase Auth for user authentication
@@ -44,27 +47,32 @@ Experienced Fantasy Ekstraklasa players who want to:
   - Row Level Security (RLS) for data protection
 
 ### Data & Scraping
+
 - **Node.js/Python** - Web scraping from fantasy.ekstraklasa.org
 - **Puppeteer/Playwright** - Automated data collection
 - **Cron jobs** - Scheduled data updates
 
 ### AI & Machine Learning
+
 - **Openrouter.ai** - Access to multiple AI models
   - Claude 3.5 Sonnet (primary)
   - GPT-4 (fallback)
   - Gemini Pro (alternative)
 
 ### Deployment & Infrastructure
+
 - **DigitalOcean** - Application hosting
 - **Docker** - Containerization
 - **GitHub Actions** - CI/CD pipeline
 
 ### Monitoring & Analytics
+
 - **Sentry** - Error tracking and monitoring
 - **Vercel Analytics** - Web analytics
 - **Supabase Dashboard** - Database monitoring
 
 ### Development Tools
+
 - **ESLint** - Code linting
 - **Prettier** - Code formatting
 - **Husky** - Git hooks
@@ -81,23 +89,28 @@ Experienced Fantasy Ekstraklasa players who want to:
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/your-username/fantasy-ekstraklasa-optimizer.git
    cd fantasy-ekstraklasa-optimizer
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Set up environment variables**
+
    ```bash
    cp .env.example .env
    ```
+
    Fill in the required environment variables (Supabase URL, API keys, etc.)
 
 4. **Start the development server**
+
    ```bash
    npm run dev
    ```
@@ -108,6 +121,7 @@ Experienced Fantasy Ekstraklasa players who want to:
 ### Environment Setup
 
 Create a `.env` file with the following variables:
+
 ```env
 # Supabase
 PUBLIC_SUPABASE_URL=your_supabase_url
@@ -123,20 +137,21 @@ SCRAPING_ENDPOINT=your_scraping_endpoint
 
 ## 📜 Available Scripts
 
-| Script | Description |
-|--------|-------------|
-| `npm run dev` | Start development server with hot reload |
-| `npm run build` | Build the application for production |
-| `npm run preview` | Preview the production build locally |
-| `npm run lint` | Run ESLint to check code quality |
-| `npm run lint:fix` | Fix ESLint errors automatically |
-| `npm run format` | Format code using Prettier |
+| Script             | Description                              |
+| ------------------ | ---------------------------------------- |
+| `npm run dev`      | Start development server with hot reload |
+| `npm run build`    | Build the application for production     |
+| `npm run preview`  | Preview the production build locally     |
+| `npm run lint`     | Run ESLint to check code quality         |
+| `npm run lint:fix` | Fix ESLint errors automatically          |
+| `npm run format`   | Format code using Prettier               |
 
 ## 🎯 Project Scope
 
 ### MVP Features (December 2025)
 
 #### ✅ Core Functionality
+
 - **Data Import**: Manual Excel import and automatic scraping
 - **AI Lineup Generation**: Openrouter.ai integration with Claude 3.5 Sonnet
 - **Statistics Browsing**: Player comparison and filtering tools
@@ -146,6 +161,7 @@ SCRAPING_ENDPOINT=your_scraping_endpoint
 - **Analytics**: Performance tracking and AI effectiveness metrics
 
 #### ✅ Technical Features
+
 - **Responsive Design**: Desktop and tablet optimization
 - **Real-time Updates**: Live data synchronization
 - **Error Handling**: Comprehensive error management with retry logic
@@ -153,12 +169,14 @@ SCRAPING_ENDPOINT=your_scraping_endpoint
 - **Security**: Row-level security and data protection
 
 ### Success Metrics
+
 - **75% AI Acceptance Rate**: Lineups with 0-2 modifications
 - **75% Success Rate**: AI lineups scoring 50+ points
 - **100 Users**: Target within 3 months of launch
 - **<1% Error Rate**: System stability and reliability
 
 ### Out of Scope (Post-MVP)
+
 - Guest mode (all features require registration)
 - Mobile applications
 - Social features and leagues
@@ -171,31 +189,37 @@ SCRAPING_ENDPOINT=your_scraping_endpoint
 ### Development Timeline
 
 #### **October 2025 (M1) - Foundation**
+
 - ✅ Astro + Supabase setup
 - ✅ Authentication system
 - ✅ Database schema design
 - ✅ Scraping prototype implementation
 
 #### **November 2025 (M2) - Core Features**
+
 - 🔄 Openrouter.ai integration
 - 🔄 AI lineup generation
 - 🔄 User management system
 - 🔄 Tutorial and onboarding
 
 #### **December 2025 (M3) - Polish & Launch**
+
 - ⏳ Testing and bug fixes
 - ⏳ Performance optimization
 - ⏳ Beta testing (5-10 users)
 - ⏳ Production deployment
 
 #### **January 2026 - Launch**
+
 - 🎯 Soft launch with first users
 - 🎯 Spring round implementation
 
 ### Current Status
+
 **Development Phase**: Foundation setup completed, core features in progress
 
 ### Risk Mitigation
+
 - **Scraping Dependencies**: Manual import backup system
 - **AI Costs**: Fallback algorithms and prompt optimization
 - **User Acquisition**: Community marketing and influencer partnerships
