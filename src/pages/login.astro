@@ -3,7 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import AuthForm from "../components/AuthForm.tsx";
 ---
 
-<Layout title="Fantasy Ekstraklasa">
+<Layout title="Login - Fantasy Ekstraklasa">
   <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-primary/10 p-4">
     <div class="max-w-md w-full space-y-8">
       <div class="text-center">
@@ -17,6 +17,8 @@ import AuthForm from "../components/AuthForm.tsx";
           client:load
           onSubmit={(email, password) => {
             // TODO: Implement actual login logic
+            // eslint-disable-next-line no-console
+            console.log("Login attempt:", { email, password });
             void email;
             void password;
           }}

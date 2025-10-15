@@ -1,0 +1,74 @@
+---
+import "../styles/global.css";
+import Navbar from "../components/Navbar.tsx";
+import Breadcrumbs from "../components/Breadcrumbs.tsx";
+import Sidebar from "../components/Sidebar.tsx";
+
+interface Props {
+  title?: string;
+  breadcrumbs?: Array<{ label: string; href?: string }>;
+  user?: {
+    id: string;
+    email: string;
+    role: 'admin' | 'user';
+  } | null;
+  activeTab?: string;
+}
+
+const { title = "Admin Panel - Fantasy Ekstraklasa", breadcrumbs = [], user, activeTab } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <Navbar client:load user={user} onLogout={() => console.log('Logout clicked')} />
+
+    <!-- Breadcrumbs -->
+    {breadcrumbs.length > 0 && <Breadcrumbs client:load items={breadcrumbs} />}
+
+    <!-- Main Content with Sidebar -->
+    <div class="flex flex-1">
+      <!-- Sidebar -->
+      <Sidebar client:load activeTab={activeTab} />
+
+      <!-- Main Content Area -->
+      <main class="flex-1 bg-gray-50">
+        <div class="p-6">
+          <slot />
+        </div>
+      </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 mt-auto">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <p class="text-center text-sm text-gray-500">
+          © 2025 Fantasy Ekstraklasa. Built with Astro & React.
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style>
+  html,
+  body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+</style>

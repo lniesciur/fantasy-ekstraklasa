@@ -1,0 +1,101 @@
+---
+import "../styles/global.css";
+import Navbar from "../components/Navbar.tsx";
+import Breadcrumbs from "../components/Breadcrumbs.tsx";
+import { ToastProvider } from "../components/ui/ToastContext.tsx";
+
+interface Props {
+  title?: string;
+  breadcrumbs?: Array<{ label: string; href?: string }>;
+  user?: {
+    id: string;
+    email: string;
+    role: 'admin' | 'user';
+  } | null;
+}
+
+const { title = "Fantasy Ekstraklasa", breadcrumbs = [], user } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <ToastProvider client:load position="top-right">
+      <!-- Navbar -->
+      <Navbar client:load user={user} onLogout={() => console.log('Logout clicked')} />
+
+      <!-- Breadcrumbs -->
+      {breadcrumbs.length > 0 && <Breadcrumbs client:load items={breadcrumbs} />}
+
+      <!-- Main Content -->
+      <main class="flex-1">
+        <slot />
+      </main>
+
+      <!-- Footer -->
+      <footer class="bg-card border-t border-border mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div class="flex flex-col items-center space-y-4">
+            <!-- Logo -->
+            <div class="flex items-center space-x-3">
+              <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                <div class="flex flex-col items-center">
+                  <div class="w-4 h-0.5 bg-primary-foreground rounded-full mb-0.5"></div>
+                  <div class="flex space-x-0.5">
+                    <div class="w-0.5 h-2 bg-primary-foreground rounded-full"></div>
+                    <div class="w-0.5 h-2 bg-primary-foreground rounded-full"></div>
+                    <div class="w-0.5 h-2 bg-primary-foreground rounded-full"></div>
+                    <div class="w-0.5 h-2 bg-primary-foreground rounded-full"></div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <h3 class="text-sm font-bold text-foreground">Fantasy Ekstraklasa</h3>
+                <p class="text-xs text-muted-foreground">Oficjalna gra fantasy</p>
+              </div>
+            </div>
+
+            <!-- Links -->
+            <div class="flex space-x-6 text-xs">
+              <a href="#" class="text-muted-foreground hover:text-primary transition-colors">O grze</a>
+              <a href="#" class="text-muted-foreground hover:text-primary transition-colors">Regulamin</a>
+              <a href="https://www.ekstraklasa.org/" target="_blank" class="text-muted-foreground hover:text-primary transition-colors">Ekstraklasa.org</a>
+              <a href="#" class="text-muted-foreground hover:text-primary transition-colors">Kontakt</a>
+            </div>
+
+            <!-- Copyright -->
+            <p class="text-center text-xs text-muted-foreground">
+              © 2025 Fantasy Ekstraklasa. Powered by Astro & React. • Wszelkie prawa zastrzeżone.
+            </p>
+          </div>
+        </div>
+      </footer>
+    </ToastProvider>
+  </body>
+</html>
+
+<style>
+  html,
+  body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  main {
+    flex: 1;
+  }
+</style>

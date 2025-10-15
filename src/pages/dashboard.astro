@@ -1,0 +1,60 @@
+---
+import AuthenticatedLayout from "../layouts/AuthenticatedLayout.astro";
+---
+
+<AuthenticatedLayout
+  title="Dashboard - Fantasy Ekstraklasa"
+  breadcrumbs={[{ label: "Dashboard" }]}
+  user={{ id: "1", email: "user@example.com", role: "user" }}
+>
+  <div class="bg-background">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div class="text-center">
+        <h1 class="text-3xl font-bold text-foreground mb-8">Dashboard</h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+          <!-- Create Lineup Button -->
+          <div class="bg-card rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow border border-border">
+            <div class="text-center">
+              <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-card-foreground mb-2">Create Lineup</h3>
+              <p class="text-muted-foreground mb-4">Build your fantasy football team</p>
+              <button class="bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-2 px-6 rounded-md transition duration-200">
+                Get Started
+              </button>
+            </div>
+          </div>
+
+          <!-- My Lineups Button -->
+          <div class="bg-card rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow border border-border">
+            <div class="text-center">
+              <div class="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-card-foreground mb-2">My Lineups</h3>
+              <p class="text-muted-foreground mb-4">View and manage your saved teams</p>
+              <button class="bg-accent hover:bg-accent/90 text-accent-foreground font-medium py-2 px-6 rounded-md transition duration-200">
+                View Lineups
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Lineup Preview -->
+        <div class="mt-12 max-w-4xl mx-auto">
+          <h2 class="text-2xl font-semibold text-foreground mb-6">Recent Lineup</h2>
+          <div class="bg-card rounded-lg shadow-md p-6 border border-border">
+            <div class="text-center text-muted-foreground">
+              <p>No recent lineups found. Create your first lineup to get started!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</AuthenticatedLayout>

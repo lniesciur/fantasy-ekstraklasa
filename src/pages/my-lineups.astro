@@ -1,0 +1,76 @@
+---
+import AuthenticatedLayout from "../layouts/AuthenticatedLayout.astro";
+---
+
+<AuthenticatedLayout
+  title="My Lineups - Fantasy Ekstraklasa"
+  breadcrumbs={[
+    { label: "Dashboard", href: "/dashboard" },
+    { label: "My Lineups" }
+  ]}
+  user={{ id: "1", email: "user@example.com", role: "user" }}
+>
+  <div class="bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900">My Lineups</h1>
+        <p class="text-gray-600 mt-2">View and manage your saved fantasy football lineups</p>
+      </div>
+
+      <!-- Filters and Actions -->
+      <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div class="flex flex-col sm:flex-row gap-4">
+            <select class="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option>All Gameweeks</option>
+              <option>Current Gameweek</option>
+              <option>Previous Gameweeks</option>
+            </select>
+            <input
+              type="text"
+              placeholder="Search lineups..."
+              class="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-md transition duration-200">
+            Create New Lineup
+          </button>
+        </div>
+      </div>
+
+      <!-- Lineups Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Empty State -->
+        <div class="col-span-full">
+          <div class="bg-white rounded-lg shadow-md p-12 text-center">
+            <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-2">No lineups yet</h3>
+            <p class="text-gray-600 mb-6">Create your first lineup to get started with Fantasy Ekstraklasa</p>
+            <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-md transition duration-200">
+              Create Lineup
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div class="mt-8 flex justify-center">
+        <nav class="flex items-center space-x-1">
+          <button class="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-md hover:bg-gray-50" disabled>
+            Previous
+          </button>
+          <button class="px-3 py-2 text-sm font-medium text-white bg-blue-600 border border-blue-600">
+            1
+          </button>
+          <button class="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-md hover:bg-gray-50" disabled>
+            Next
+          </button>
+        </nav>
+      </div>
+    </div>
+  </div>
+</AuthenticatedLayout>
